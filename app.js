@@ -20,7 +20,7 @@ class Podcast extends Homey.App {
 			console.log('get playlists');
 			//console.log(data);
 			let results=readfeed();
-			//console.log(data);
+			console.log(results);
 			callback(null, results);
 		});		
 	}	
