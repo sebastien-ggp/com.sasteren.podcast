@@ -11,7 +11,7 @@ class Podcast extends Homey.App {
 	onInit() {
 		this.log('Podcast starting');
 		
-		data=readfeed();
+		//data=readfeed();
 		//console.log(data);
 		Homey.ManagerMedia.requestPlaylistsUpdate();
 		startPollingForUpdates();
@@ -19,40 +19,49 @@ class Podcast extends Homey.App {
 		Homey.ManagerMedia.on('getPlaylists', (callback) => {
 			console.log('get playlists');
 			//console.log(data);
-			let results=readfeed();
-			console.log(results);
-			callback(null, results);
+			
+			readfeed().then(function(results) {
+				console.log(results);
+				callback(null, results);
+			}).fail(function(err){
+				console.log(err);
+			});
+			
 		});		
 	}	
 }
 
 function startPollingForUpdates() {
 	var pollingInterval = setInterval(() => {
+		console.log('start polling');
 		data=readfeed();
 		//console.log(data);
 	}, 60000);
 };
 
 function readfeed() {
+	var str = {};
 	http.get('http://feeds.soundcloud.com/users/soundcloud:users:46838518/sounds.rss', function(res) {
 		var parser = new FeedMe(true);
-
+		
 		res.pipe(parser);
 		parser.on('end', function() {
 			data = parser.done();
-			var str = {
+			var result = {
 					type: 'playlist',
-					id: data.title,
-					title: data.title			,
-					tracks: parseTracks(data.items) || false,
+					id: result.title,
+					title: result.title			,
+					tracks: parseTracks(result.items) || false,
 			};
 			//console.log(str);
-			return str;
-		});
-	
+		});	
 	});
-}
+	return str;
+};
 
+	
+	
+	
 function parseTracks(tracks) {
 	const result = [];
 	if (!tracks) {
