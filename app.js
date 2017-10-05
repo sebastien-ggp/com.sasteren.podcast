@@ -36,6 +36,7 @@ function startPollingForUpdates() {
 function readfeed() {
 	http.get('http://feeds.soundcloud.com/users/soundcloud:users:46838518/sounds.rss', function(res) {
 		var parser = new FeedMe(true);
+
 		res.pipe(parser);
 		parser.on('end', function() {
 			data = parser.done();
@@ -45,9 +46,10 @@ function readfeed() {
 					title: data.title			,
 					tracks: parseTracks(data.items) || false,
 			};
-		//console.log(str);
+			//console.log(str);
+			return str;
 		});
-  
+	
 	});
 }
 
