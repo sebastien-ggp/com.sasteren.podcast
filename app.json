@@ -14,5 +14,5 @@
         "name": "Bas van den Bosch",
         "email": "bvdbos@gmail.com"
     },
-    "media": [ "play", "search", "getPlaylists", "getPlaylist" ]
+    "media": [ "getPlaylists", "getPlaylist" ]
 }

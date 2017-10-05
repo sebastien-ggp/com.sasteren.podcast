@@ -4,7 +4,7 @@ const Homey = require('homey');
 const dateformat = require('dateformat');
 var FeedMe = require('feedme');
 var http = require('http');
-var data = '';
+var data = {};
 
 class Podcast extends Homey.App {
 	
@@ -18,17 +18,26 @@ class Podcast extends Homey.App {
 
 		Homey.ManagerMedia.on('getPlaylists', (callback) => {
 			console.log('get playlists');
-			//console.log(data);
+			//hier eigenlijk gewoon de global data pakken en die terugsturen
+			readfeed().then(function(results) {
+				//console.log(results);
+				return callback(null, results);
+			})
 			
+		});	
+
+		Homey.ManagerMedia.on('getPlaylist', (request, callback) => {
+			console.log('get playlist');
+			//hier eigenlijk gewoon de global data pakken en die terugsturen
 			readfeed().then(function(results) {
 				console.log(results);
-				callback(null, results);
-			}).fail(function(err){
-				console.log(err);
-			});
+				return callback(null, results);
+			})
 			
-		});		
-	}	
+		});			
+	}
+
+
 }
 
 function startPollingForUpdates() {
@@ -40,23 +49,22 @@ function startPollingForUpdates() {
 };
 
 function readfeed() {
-	var str = {};
-	http.get('http://feeds.soundcloud.com/users/soundcloud:users:46838518/sounds.rss', function(res) {
-		var parser = new FeedMe(true);
-		
-		res.pipe(parser);
-		parser.on('end', function() {
-			data = parser.done();
-			var result = {
+	return new Promise(function(resolve,reject){
+		http.get('http://feeds.soundcloud.com/users/soundcloud:users:46838518/sounds.rss', function(res) {
+			var parser = new FeedMe(true);
+			res.pipe(parser);
+			parser.on('end', function() {
+				data = parser.done();
+				var result = {
 					type: 'playlist',
-					id: result.title,
-					title: result.title			,
-					tracks: parseTracks(result.items) || false,
-			};
-			//console.log(str);
-		});	
-	});
-	return str;
+					id: data.title,
+					title: data.title			,
+					tracks: parseTracks(data.items) || false,
+				};
+			resolve(result);
+			});	
+		});
+	})
 };
 
 	
