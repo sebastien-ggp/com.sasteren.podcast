@@ -4,16 +4,21 @@ const Homey = require('homey');
 const dateformat = require('dateformat');
 var FeedMe = require('feedme');
 var http = require('http');
-var data = {};
+var data;
 
 class Podcast extends Homey.App {
 	
 	onInit() {
 		this.log('Podcast starting');
 		
-		//data=readfeed();
+		readfeed().then(function(results) {
+			//console.log(results);
+			data=results;
+			//console.log(data);
+			return (data);
+		})	
 		//console.log(data);
-		Homey.ManagerMedia.requestPlaylistsUpdate();
+		//Homey.ManagerMedia.requestPlaylistsUpdate();
 		startPollingForUpdates();
 
 		Homey.ManagerMedia.on('getPlaylists', (callback) => {
@@ -21,9 +26,11 @@ class Podcast extends Homey.App {
 			//hier eigenlijk gewoon de global data pakken en die terugsturen
 			readfeed().then(function(results) {
 				//console.log(results);
-				return callback(null, results);
+				data=results;
+				return (data);
 			})
-			
+			console.log(data);
+			return callback(null, data);
 		});	
 
 		Homey.ManagerMedia.on('getPlaylist', (request, callback) => {
@@ -31,9 +38,10 @@ class Podcast extends Homey.App {
 			//hier eigenlijk gewoon de global data pakken en die terugsturen
 			readfeed().then(function(results) {
 				console.log(results);
-				return callback(null, results);
+				data=results;
+				return (data);
 			})
-			
+				return callback(null, data);
 		});			
 	}
 
@@ -43,9 +51,9 @@ class Podcast extends Homey.App {
 function startPollingForUpdates() {
 	var pollingInterval = setInterval(() => {
 		console.log('start polling');
-		data=readfeed();
-		//console.log(data);
-	}, 60000);
+		//data=readfeed();
+		Homey.ManagerMedia.requestPlaylistsUpdate();
+	}, 20000);
 };
 
 function readfeed() {
