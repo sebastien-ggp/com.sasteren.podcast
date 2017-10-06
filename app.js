@@ -11,37 +11,18 @@ class Podcast extends Homey.App {
 	onInit() {
 		this.log('Podcast starting');
 		
-		readfeed().then(function(results) {
-			//console.log(results);
-			data=results;
-			//console.log(data);
-			return (data);
-		})	
-		//console.log(data);
-		//Homey.ManagerMedia.requestPlaylistsUpdate();
+		Homey.ManagerMedia.requestPlaylistsUpdate();
 		startPollingForUpdates();
 
 		Homey.ManagerMedia.on('getPlaylists', (callback) => {
 			console.log('get playlists');
-			//hier eigenlijk gewoon de global data pakken en die terugsturen
-			readfeed().then(function(results) {
-				//console.log(results);
-				data=results;
-				return (data);
-			})
 			console.log(data);
 			return callback(null, data);
 		});	
 
 		Homey.ManagerMedia.on('getPlaylist', (request, callback) => {
 			console.log('get playlist');
-			//hier eigenlijk gewoon de global data pakken en die terugsturen
-			readfeed().then(function(results) {
-				console.log(results);
-				data=results;
-				return (data);
-			})
-				return callback(null, data);
+			return callback(null, data);
 		});			
 	}
 
@@ -51,7 +32,12 @@ class Podcast extends Homey.App {
 function startPollingForUpdates() {
 	var pollingInterval = setInterval(() => {
 		console.log('start polling');
-		//data=readfeed();
+		readfeed().then(function(results) {
+			data=results;
+			//console.log(data);
+			return (data);
+		})	
+		//console.log(data);
 		Homey.ManagerMedia.requestPlaylistsUpdate();
 	}, 20000);
 };
@@ -64,7 +50,7 @@ function readfeed() {
 			parser.on('end', function() {
 				data = parser.done();
 				var result = {
-					type: 'playlist',
+					//type: 'playlist',
 					id: data.title,
 					title: data.title			,
 					tracks: parseTracks(data.items) || false,
@@ -103,17 +89,17 @@ function parseTrack(track) {
 				type: 'artist',
 			},
 		],
-		duration: track.duration || 'unknown',
+		duration: track.duration || 10000,
 		artwork: '',
 		genre: track.genre || 'unknown',
 		release_date: dateformat(track.pubdate, "yyyy-mm-dd"),
 		codecs: ['homey:codec:mp3'],
 		bpm: '',
-		options : [ 
+		options :  
 			{
 			url : track.enclosure.url
 			}
-		]
+		
 	}
 }
 

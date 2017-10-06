@@ -1,1 +1,12 @@
-{}
+{
+	"settings": {
+		"title": "Podcast Settings",
+		"warning": "Something went wrong, please try again",
+		"playlists": "Podcast__suffix__",
+		"playlists_plural": "s",
+		"auth": {
+			"authorize": "Connect with Podcast",
+			"deauthorize": "Disconnect from Podcast"
+		}
+	}
+}
