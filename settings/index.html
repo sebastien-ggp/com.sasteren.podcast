@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+    <head>
+
+        <!-- The '/homey.js' script must be included in your settings view to work -->
+        <script type="text/javascript" src="/homey.js" data-origin="settings"></script>
+
+    </head>
+    <body>
+
+        <h1 data-i18n="settings.title">
+            <!--
+            This field will automatically be filled by a translated string with key 'settings.title'.
+            Read more about translations at Internationalization.
+            -->
+        </h1>
+        <p data-i18n="settings.subtitle">
+            <!--
+            This field will also be translated
+            -->
+        </p>
+
+        <fieldset>
+            <legend>Podcast Settings</legend>
+
+            <div class="field row">
+                <label for="Podcast URL">Podcast URL</label>
+                <input id="pcurl1" type="text" value="" />
+            </div>
+            <div class="field row">
+                <label for="Podcast URL">Podcast URL</label>
+                <input id="pcurl2" type="text" value="" />
+            </div>
+            <div class="field row">
+                <label for="Podcast URL">Podcast URL</label>
+                <input id="pcurl3" type="text" value="" />
+            </div>
+            <div class="field row">
+                <label for="Podcast URL">Podcast URL</label>
+                <input id="pcurl4" type="text" value="" />
+            </div>
+                                                
+
+        </fieldset>
+
+        <button id="save" class="right">Save changes</button>
+
+        <script type="text/javascript">
+
+        // a method named 'onHomeyReady' must be present in your code
+        function onHomeyReady( Homey ){
+
+            // Tell Homey we're ready to be displayed
+            Homey.ready();
+
+            var pcurl1 = document.getElementById('pcurl1');
+            var pcurl2 = document.getElementById('pcurl2');
+			var pcurl3 = document.getElementById('pcurl3');
+            var pcurl4 = document.getElementById('pcurl4');
+            var saveElement = document.getElementById('save');
+
+            Homey.get('pcurl1', function( err, username ) {
+               if( err ) return Homey.alert( err );
+               pculr1Element.value = pcurl1;
+            });
+
+            Homey.get('pcurl2', function( err, password ) {
+               if( err ) return Homey.alert( err );
+               pcurl2Element.value = pcurl2;
+            });
+
+            Homey.get('pcurl3', function( err, username ) {
+               if( err ) return Homey.alert( err );
+               pcurl3Element.value = pcurl3;
+            });
+			
+            Homey.get('pcurl4', function( err, username ) {
+               if( err ) return Homey.alert( err );
+               pcurl4Element.value = pcurl4;
+            });
+			
+            saveElement.addEventListener('click', function(e) {
+
+                Homey.set('pcurl1', pcurl1Element.value, function( err ){
+                    if( err ) return Homey.alert( err );
+                });
+                Homey.set('pcurl2', pcurl2Element.value, function( err ){
+                    if( err ) return Homey.alert( err );
+                });
+				Homey.set('pcurl3', pcurl3Element.value, function( err ){
+                    if( err ) return Homey.alert( err );
+                });
+                Homey.set('pcurl4', pcurl4Element.value, function( err ){
+                    if( err ) return Homey.alert( err );
+                });
+				
+            });
+        }
+        </script>
+
+    </body>
+</html>
