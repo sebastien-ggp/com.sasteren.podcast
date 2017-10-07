@@ -4,19 +4,26 @@ const Homey = require('homey');
 const dateformat = require('dateformat');
 var FeedMe = require('feedme');
 var http = require('http');
-var data;
+var data = []; //
 var feedurl='http://feeds.nos.nl/MHOOM';
+var urllist = []; //array with {name,url} from settings
+var replText;
 
 class Podcast extends Homey.App {
 	
 	onInit() {
 		this.log('Podcast starting');
-			readfeed(feedurl).then(function(results) {
-			data=results;
-			return (data);
-			Homey.ManagerMedia.requestPlaylistsUpdate();
-		})	
 		
+		getsettings().then(function(results) {
+			console.log("settings read");
+			urllist=results;
+			console.log(urllist);
+			readfeeds().then(function(results) {
+				console.log("feeds read");
+				data=results;
+				Homey.ManagerMedia.requestPlaylistsUpdate();
+			})	
+		});
 
 		startPollingForUpdates();
 
@@ -42,14 +49,25 @@ class Podcast extends Homey.App {
 function startPollingForUpdates() {
 	var pollingInterval = setInterval(() => {
 		console.log('start polling');
-		readfeed(feedurl).then(function(results) {
-			data=results;
-			return (data);
+		readfeeds().then(function(results) {
+			Homey.ManagerMedia.requestPlaylistsUpdate();
 		})	
-		Homey.ManagerMedia.requestPlaylistsUpdate();
 	}, 120000);
 };
 
+function readfeeds() {
+	return new Promise(function(resolve,reject){
+		for(var i = 0; i < urllist.length; i++) {
+			var obj = urllist[i];
+			var item;
+			readfeed(obj.url).then(function(item) {
+				data.push (item);
+			});
+		resolve (data);
+		}
+	})
+}
+	
 function readfeed(url) {
 	console.log(url);
 	return new Promise(function(resolve,reject){
@@ -58,20 +76,32 @@ function readfeed(url) {
 			res.pipe(parser);
 			parser.on('end', function() {
 				var pl = parser.done();
-				var result = [{
+				var result = {
 					type: 'playlist',
 					id: pl.title,
 					title: pl.title			,
 					tracks: parseTracks(pl.items) || false,
-				}];
-			data=result;
+				};
 			resolve(result);
 			});	
 		});
 	})
 };
 
-	
+//get name and url list from settings and create array
+function getsettings() {
+	return new Promise(function(resolve,reject){
+		var replText = Homey.ManagerSettings.get('podcasts');		
+		var list = []
+		if (typeof replText === 'object') {
+			Object.keys(replText).forEach(function (key) {
+				list.push( {"name":key,"url":replText[key]})
+				return list;
+			});
+		resolve(list);	
+		}
+	})
+}	
 	
 	
 function parseTracks(tracks) {
