@@ -7,7 +7,7 @@
 		"textnumber_title": "to do:",
 		"textnumber_info": "<A HREF='https://github.com/bvdbos/com.sasteren.podcast'>a lot</A>",
 		"replace_items": "podcast-urls",
-		"replace_add_button": "add podcast"
+		"replace_add_button": "add podcast",
 		"podcast_url": "podcast url",
 		"podcast_name": "podcast titel",
 		"textnumber_checkbox": "or check/uncheck me to save"
