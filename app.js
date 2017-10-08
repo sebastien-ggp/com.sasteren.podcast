@@ -4,9 +4,10 @@ const Homey = require('homey');
 const dateformat = require('dateformat');
 var FeedMe = require('feedme');
 var http = require('http');
-var data = []; //
-var feedurl='http://feeds.nos.nl/MHOOM';
-var urllist = []; //array with {name,url} from settings
+var https = require('https');
+var httpmin = require ('http.min');
+var data = []; //array with media-objects
+var urllist = []; //array with {name,url} feeds from settings
 var replText;
 
 class Podcast extends Homey.App {
@@ -49,43 +50,53 @@ class Podcast extends Homey.App {
 function startPollingForUpdates() {
 	var pollingInterval = setInterval(() => {
 		console.log('start polling');
+		//data=[];
 		readfeeds().then(function(results) {
+			console.log('feeds read from polling');
+			console.log(results);
 			Homey.ManagerMedia.requestPlaylistsUpdate();
 		})	
-	}, 120000);
+	}, 30000);
 };
 
-function readfeeds() {
-	return new Promise(function(resolve,reject){
+async function readfeeds() {
+	var a = await new Promise(function(resolve,reject){
+		var temparray = [];
 		for(var i = 0; i < urllist.length; i++) {
 			var obj = urllist[i];
-			var item;
 			readfeed(obj.url).then(function(item) {
-				data.push (item);
-			});
-		resolve (data);
-		}
-	})
+				console.log("feed read");
+				console.log(item);
+				temparray.push (item);
+				console.log("temparray is");
+				console.log (temparray);
+			}) 
+
+		};
+		console.log(temparray);
+		resolve (temparray);
+	});
+	return (a);
 }
 	
-function readfeed(url) {
-	console.log(url);
-	return new Promise(function(resolve,reject){
-		http.get(url, function(res) {
-			var parser = new FeedMe(true);
-			res.pipe(parser);
-			parser.on('end', function() {
-				var pl = parser.done();
-				var result = {
-					type: 'playlist',
-					id: pl.title,
-					title: pl.title			,
-					tracks: parseTracks(pl.items) || false,
-				};
-			resolve(result);
-			});	
-		});
-	})
+async function readfeed(url) {
+	var b = await new Promise(function(resolve,reject){
+			http.get(url, function(res) {
+				var parser = new FeedMe(true);
+				res.pipe(parser);
+				parser.on('end', function() {
+					var pl = parser.done();
+					var result = {
+						type: 'playlist',
+						id: pl.title,
+						title: pl.title			,
+						tracks: parseTracks(pl.items) || false,
+					};
+				resolve(result);
+				});	
+			});		
+	});
+	return (b);
 };
 
 //get name and url list from settings and create array
