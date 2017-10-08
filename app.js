@@ -56,7 +56,7 @@ function startPollingForUpdates() {
 			console.log(results);
 			Homey.ManagerMedia.requestPlaylistsUpdate();
 		})	
-	}, 30000);
+	}, 120000);
 };
 
 async function readfeeds() {
@@ -132,7 +132,7 @@ function parseTracks(tracks) {
 
 function parseTrack(track) {
 	return {
-		//type: 'track',
+		type: 'track',
 		id: track.enclosure.url,
 		title: track.title,
 		artist: [
@@ -141,17 +141,17 @@ function parseTrack(track) {
 				type: 'artist',
 			},
 		],
-		//duration: track.duration || 100000,		
-		duration: null,
+		duration: track.duration || null,		
+		//duration: null,
 		artwork: '',
 		genre: track.genre || 'unknown',
 		release_date: dateformat(track.pubdate, "yyyy-mm-dd"),
 		codecs: ['homey:codec:mp3'],
 		bpm: track.pbm || 0,
-		options :  
-			{
-			url : track.enclosure.url
-			}
+		//options :  
+		//	{
+		//	url : track.enclosure.url
+		//	}
 		
 	}
 }

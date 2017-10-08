@@ -1,6 +1,15 @@
 {
 	"settings": {
 		"title": "Podcast Settings",
-		"subtitle": "add your Podcasts here"
+		"intro": "add your Podcasts here",
+		"replace_title": "watch out",
+		"replace_info": "https-urls not yet supported. Also: only saves on deleting a line so always add an extra line and delete that one",
+		"textnumber_title": "to do:",
+		"textnumber_info": "<A HREF='https://github.com/bvdbos/com.sasteren.podcast'>a lot</A>",
+		"replace_items": "podcast-urls",
+		"replace_add_button": "add podcast"
+		"podcast_url": "podcast url",
+		"podcast_name": "podcast titel",
+		"textnumber_checkbox": "or check/uncheck me to save"
 	}
 }

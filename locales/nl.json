@@ -1,0 +1,15 @@
+{
+	"settings": {
+		"title": "Podcast Instellingen",
+		"intro": "Voeg hier uw Podcasts toe",
+		"replace_title": "let op",
+		"replace_info": "https-urls worden nog niet ondersteund. En: podcasts worden allen opgeslagen wanneer een lijn verwijderd wordt. Voeg dus altijd een lege lijn toe en verwijder deze weer.",
+		"textnumber_title": "nog te doen:",
+		"textnumber_info": "<A HREF='https://github.com/bvdbos/com.sasteren.podcast'>heel veel</A>",
+		"replace_items": "podcast-urls",
+		"replace_add_button": "Toevoegen",		
+		"podcast_url": "podcast url",
+		"podcast_name": "podcast titel",
+		"textnumber_checkbox": "of markeer/de-markeer me om op te slaan"
+	}
+}
