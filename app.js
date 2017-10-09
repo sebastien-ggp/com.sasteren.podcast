@@ -44,6 +44,19 @@ class Podcast extends Homey.App {
 			console.log(urlobj);			
 			return callback(null, urlobj);
 		});
+		
+		Homey.ManagerSettings.on('set', function(settings) {
+			getsettings().then(function(results) {
+				console.log("settings read");
+				urllist=results;
+				console.log(urllist);
+				readfeeds().then(function(results) {
+					console.log("feeds read");
+					data=results;
+					Homey.ManagerMedia.requestPlaylistsUpdate();
+				});
+			});
+		});
 	}
 }
 
@@ -56,7 +69,7 @@ function startPollingForUpdates() {
 			console.log(results);
 			Homey.ManagerMedia.requestPlaylistsUpdate();
 		})	
-	}, 120000);
+	}, 30000);
 };
 
 async function readfeeds() {
@@ -113,6 +126,8 @@ function getsettings() {
 		}
 	})
 }	
+
+
 	
 	
 function parseTracks(tracks) {
@@ -132,7 +147,7 @@ function parseTracks(tracks) {
 
 function parseTrack(track) {
 	return {
-		type: 'track',
+		//type: 'track',
 		id: track.enclosure.url,
 		title: track.title,
 		artist: [
@@ -141,17 +156,17 @@ function parseTrack(track) {
 				type: 'artist',
 			},
 		],
-		duration: track.duration || null,		
-		//duration: null,
+		//duration: track.duration || 100000,		
+		duration: null,
 		artwork: '',
 		genre: track.genre || 'unknown',
 		release_date: dateformat(track.pubdate, "yyyy-mm-dd"),
 		codecs: ['homey:codec:mp3'],
 		bpm: track.pbm || 0,
-		//options :  
-		//	{
-		//	url : track.enclosure.url
-		//	}
+		options :  
+			{
+			url : track.enclosure.url
+			}
 		
 	}
 }
