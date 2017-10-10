@@ -1,8 +1,6 @@
 # Podcast-media
 plays podcasts in Homey Media
 
-Saving podcasts in settings is tricky. Add podcasts, then add a new line and delete that line. That triggers a save-action.
-
 ## to do:
 <br><strike>1) https doesn't work :(</strike>
 <br><strike>2) why the &^%%$ doesn't saving work?</strike>
