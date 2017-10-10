@@ -7,14 +7,14 @@ Saving podcasts in settings is tricky. Add podcasts, then add a new line and del
 <br><strike>1) https doesn't work :(</strike>
 <br><strike>2) why the &^%%$ doesn't saving work?</strike>
 <br><strike>3) texts for settings</strike>
-4) verify urls
-5) lots of error-chekings
-6) rewrite item-title with date
-7) use self-given item-name
-8) triggers
-9) action cards
-10) voice commands
-11) allow https
+<br>4) verify urls
+<br><strike>5) lots of error-chekings</strike>
+<br>6) rewrite item-title with date
+<br>7) use self-given item-name
+<br>8) triggers
+<br>9) action cards
+<br>10) voice commands
+<br>11) allow https
 
 v0.1.4 (10-10-17) : no https allowed and fixed saving
 
