@@ -15,7 +15,7 @@ Saving podcasts in settings is tricky. Add podcasts, then add a new line and del
 9) action cards
 10) voice commands
 
-v0.1.2 (10-10-17) : use promises
+v0.1.3 (10-10-17) : use promises
 
 v0.1.1 (9-10-17) : no app-restart needed for reloading podcasts in Media-view, texts for settings added
 

@@ -51,12 +51,12 @@ class Podcast extends Homey.App {
 				console.log("settings read");
 				urllist=urlsettings;
 				//console.log(urllist);
-				var results = readfeeds();	
-				console.log('feeds read from changing settings');
-				console.log (results);
-				data=results;
-				//console.log(data);
-				Homey.ManagerMedia.requestPlaylistsUpdate();	
+				readfeeds().then(function(results) {
+					console.log("feeds read from changing settings");
+					data=results;
+					console.log(results);
+					Homey.ManagerMedia.requestPlaylistsUpdate();
+				})		
 			});
 		});
 		
@@ -107,7 +107,7 @@ function startPollingForUpdates() {
 				console.log(results);
 				Homey.ManagerMedia.requestPlaylistsUpdate();
 			})	
-	}, 100000);
+	}, 300000);
 };
 
 //get name and url list from settings and create array
