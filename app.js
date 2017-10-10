@@ -20,8 +20,9 @@ class Podcast extends Homey.App {
 			urllist=results;
 			console.log(urllist);
 			readfeeds().then(function(results) {
-				console.log("feeds read");
+				console.log("feeds read from start");
 				data=results;
+				console.log(results);
 				Homey.ManagerMedia.requestPlaylistsUpdate();
 			})	
 		});
@@ -46,54 +47,39 @@ class Podcast extends Homey.App {
 		});
 		
 		Homey.ManagerSettings.on('set', function(settings) {
-			getsettings().then(function(results) {
+			getsettings().then(function(urlsettings) {
 				console.log("settings read");
-				urllist=results;
-				console.log(urllist);
-				readfeeds().then(function(results) {
-					console.log("feeds read");
-					data=results;
-					Homey.ManagerMedia.requestPlaylistsUpdate();
-				});
+				urllist=urlsettings;
+				//console.log(urllist);
+				var results = readfeeds();	
+				console.log('feeds read from changing settings');
+				console.log (results);
+				data=results;
+				//console.log(data);
+				Homey.ManagerMedia.requestPlaylistsUpdate();	
 			});
 		});
+		
 	}
 }
 
-function startPollingForUpdates() {
-	var pollingInterval = setInterval(() => {
-		console.log('start polling');
-		//data=[];
-		readfeeds().then(function(results) {
-			console.log('feeds read from polling');
-			console.log(results);
-			Homey.ManagerMedia.requestPlaylistsUpdate();
-		})	
-	}, 30000);
-};
-
 async function readfeeds() {
-	var a = await new Promise(function(resolve,reject){
 		var temparray = [];
 		for(var i = 0; i < urllist.length; i++) {
-			var obj = urllist[i];
-			readfeed(obj.url).then(function(item) {
-				console.log("feed read");
-				console.log(item);
+				var obj = urllist[i];
+				var item = await readfeed(obj.url);
+				//console.log("feed read:");
+				//console.log (obj.url);
+				//console.log("result:");
+				//console.log(item);
 				temparray.push (item);
-				console.log("temparray is");
-				console.log (temparray);
-			}) 
-
 		};
-		console.log(temparray);
-		resolve (temparray);
-	});
-	return (a);
-}
+		//console.log(temparray);
+		return temparray;
+};
 	
-async function readfeed(url) {
-	var b = await new Promise(function(resolve,reject){
+function readfeed(url) {
+	return new Promise(resolve => {
 			http.get(url, function(res) {
 				var parser = new FeedMe(true);
 				res.pipe(parser);
@@ -109,7 +95,19 @@ async function readfeed(url) {
 				});	
 			});		
 	});
-	return (b);
+};
+
+function startPollingForUpdates() {
+	var pollingInterval = setInterval(() => {
+		console.log('start polling');
+		//data=[];
+			readfeeds().then(function(results) {
+				console.log("feeds read from polling");
+				data=results;
+				console.log(results);
+				Homey.ManagerMedia.requestPlaylistsUpdate();
+			})	
+	}, 100000);
 };
 
 //get name and url list from settings and create array
@@ -147,7 +145,7 @@ function parseTracks(tracks) {
 
 function parseTrack(track) {
 	return {
-		//type: 'track',
+		type: 'track',
 		id: track.enclosure.url,
 		title: track.title,
 		artist: [
@@ -156,7 +154,7 @@ function parseTrack(track) {
 				type: 'artist',
 			},
 		],
-		//duration: track.duration || 100000,		
+		duration: track.duration || 0,		
 		duration: null,
 		artwork: '',
 		genre: track.genre || 'unknown',
