@@ -172,8 +172,8 @@
 			} else {
 				var colBack = '#FFFFFF';
 			}
-			return ('<tr class="input_holder" style="border: 1px solid #F0F0F0;"><td style="width: 160px;"><input style="border: 0px solid #F0F0F0; background-color: ' + colBack + ';" id="inText" class="input" type="text" value="'+val1+'" /></td><td style="width: 400px;"><input style="border: 0px solid #F0F0F0;" id="inNum" class="replace" type="text" value="'+val2+'" /></td><td>&nbsp;<a href="#" title="'+valRemove+'" class="remove_field">&nbsp;X&nbsp;</a></td></tr>');
-			//return ('<tr class="input_holder" style="border: 1px solid #F0F0F0;"><td style="width: 160px;"><input style="border: 0px solid #F0F0F0; background-color: ' + colBack + ';" id="inText" class="input" type="text" value="'+val1+'" oninput="inputChanged(this, ' + idx + ');" /></td><td style="width: 400px;"><input style="border: 0px solid #F0F0F0;" id="inNum" class="replace" type="text" value="'+val2+'" oninput="inputChanged(this, ' + idx + ');" /></td><td>&nbsp;<a href="#" title="'+valRemove+'" class="remove_field">&nbsp;X&nbsp;</a></td></tr>');
+			return ('<tr class="input_holder" style="border: 1px solid #F0F0F0;"><td style="width: 160px;"><input style="border: 0px solid #F0F0F0; background-color: ' + colBack + ';" id="inText" class="input" type="text" value="'+val1+'" oninput="inputChanged(this, ' + idx + ');" /></td><td style="width: 400px;"><input style="border: 0px solid #F0F0F0;" id="inUrl" class="replace" type="text" value="'+val2+'" oninput="inputChanged(this, ' + idx + ');" /></td><td>&nbsp;<a href="#" title="'+valRemove+'" class="remove_field">&nbsp;X&nbsp;</a></td></tr>');
+			//return ('<tr class="input_holder" style="border: 1px solid #F0F0F0;"><td style="width: 160px;"><input style="border: 0px solid #F0F0F0; background-color: ' + colBack + ';" id="inText" class="input" type="text" value="'+val1+'" oninput="inputChanged(this, ' + idx + ');" /></td><td style="width: 400px;"><input style="border: 0px solid #F0F0F0;" id="inUrl" class="replace" type="text" value="'+val2+'" oninput="inputChanged(this, ' + idx + ');" /></td><td>&nbsp;<a href="#" title="'+valRemove+'" class="remove_field">&nbsp;X&nbsp;</a></td></tr>');
 
 			}
 
@@ -310,11 +310,14 @@
 
 
 		function inputChanged(obj, idx){
+					console.log("input changed");
 			clearTimeout(saveStandby);
 			refreshCheckList(idx);
 			if(obj != undefined){ // at text or number
 
 				var xId = obj.id, xValue = obj.value;
+				console.log (obj.id);
+				console.log(obj.value);
 				switch(obj.id){
 
 				case 'inText':
@@ -347,12 +350,30 @@
 					}
 					break;
 
-				case 'inNum':
-
+				case 'inUrl':
+					console.log(xValue.substr(0,5));				
+					if (xValue.substr(0,5) == 'https') {
+					console.log("is https");
+						xValue = '?'; 
+						obj.style.backgroundColor = '#F0F0F0';
+					} else {
+						obj.style.backgroundColor = '#FFFFFF';
+					}
+					
+					if ((xValue.substr(0,4) == 'http') || (xValue == '?')) {
+					} else {
+						console.log ("geen http");
+						xValue = '?'; 
+						obj.style.backgroundColor = '#F0F0F0';
+					}
+					
+					
+					break;	
 				}
-				//if( xValue.substr(0,1) != '?' ){
+				
+				if( xValue.substr(0,1) != '?' ){
 					saveStandby = setTimeout(function() { save(); }, 4000); // wait for next edit before saving
-				//}
+				}
 			} else { // at remove
 				saveStandby = setTimeout(function() { save(); }, 2000); // wait for next edit before saving
 			}
