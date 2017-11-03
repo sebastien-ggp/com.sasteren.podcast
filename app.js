@@ -88,7 +88,7 @@ function readfeed(url) {
 					var result = {
 						type: 'playlist',
 						id: pl.title,
-						title: pl.title			,
+						title: pl.title,
 						tracks: parseTracks(pl.items) || false,
 					};
 				resolve(result);
@@ -113,7 +113,8 @@ function startPollingForUpdates() {
 //get name and url list from settings and create array
 function getsettings() {
 	return new Promise(function(resolve,reject){
-		var replText = Homey.ManagerSettings.get('podcasts');		
+		var replText = Homey.ManagerSettings.get('podcasts');
+		console.log(replText);
 		var list = []
 		if (typeof replText === 'object') {
 			Object.keys(replText).forEach(function (key) {
