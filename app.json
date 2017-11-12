@@ -31,7 +31,7 @@
 				},
 				"tokens": [
 					{
-						"name": "podcast-title",
+						"name": "podcast",
 						"type": "string",
 						"title": {
 							"en": "podcast-title",

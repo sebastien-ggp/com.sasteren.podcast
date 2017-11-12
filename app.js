@@ -98,6 +98,7 @@ function readfeed(url) {
 									'item': item.enclosure.url,
 									'tijd': item.pubdate
 								}		
+								console.log(urllist[objIndex].flowTriggers);
 								urllist[objIndex].flowTriggers.newpodcast.trigger(tokens).catch( this.error );
 								
 								
