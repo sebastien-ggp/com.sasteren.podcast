@@ -10,7 +10,7 @@
 		"nl": "speel podcasts af met Homey Music"
     },
     "category": "internet",
-    "version": "0.1.6",
+    "version": "0.2.0",
     "compatibility": ">=1.5.0",
     "author": {
         "name": "Bas van den Bosch",
@@ -31,11 +31,11 @@
 				},
 				"tokens": [
 					{
-						"name": "podcast",
+						"name": "podcast-title",
 						"type": "string",
 						"title": {
-							"en": "podcast",
-							"nl": "podcast"
+							"en": "podcast-title",
+							"nl": "podcast-naam"
 						}
 					},
 					{

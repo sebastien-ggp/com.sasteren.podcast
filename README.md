@@ -9,12 +9,16 @@ plays podcasts in Homey Media
 <strike>5) lots of error-chekings</strike>  
 6) rewrite item-title with date  
 7) use self-given item-name  
-8) triggers  
+<strike>8) triggers</strike>  
 9) action cards  
 10) voice commands  
 11) allow https  
+<strike>12) global tags for latest podcast-item</strike>  
+<strike>13) if playing time is known, add it to media-manager</strike>  
 
 ## Changelog
+v0.2.0 (12-11-2017) : added global tags for action-card, added trigger-card, changed icon, added playing time  
+  
 v0.1.6 (03-11-17) : changed formatting and icon  
   
 v0.1.5 (21-10-17) : changed icon and better settings-line

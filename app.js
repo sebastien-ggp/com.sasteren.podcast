@@ -14,9 +14,6 @@ class Podcast extends Homey.App {
 	onInit() {
 		this.log('Podcast starting');
 		
-		var TriggerNewPodcast = new Homey.FlowCardTrigger('new_podcast_item')
-            .register();
-		
 		getsettings().then(function(results) {
 			console.log("settings read");
 			urllist=results;
@@ -24,7 +21,6 @@ class Podcast extends Homey.App {
 			readfeeds().then(function(results) {
 				console.log("feeds read from start");
 				data=results;
-				//console.log(results);
 				Homey.ManagerMedia.requestPlaylistsUpdate();
 			})	
 		});
@@ -72,13 +68,8 @@ async function readfeeds() {
 				var obj = urllist[i];
 				//console.log("readfeed ", obj.url);
 				var item = await readfeed(obj.url);
-				//console.log("feed read:");
-				//console.log (obj.url);
-				//console.log("result:");
-				//console.log(item);
 				temparray.push (item);
 		};
-		//console.log(temparray);
 		return temparray;
 };
 	
@@ -89,7 +80,6 @@ function readfeed(url) {
 				var teller=0;
 				
 				parser.on('item', (item) => {
-					//console.log("new item");
 					if (teller === 0) { //only on first item
 						var objIndex = urllist.findIndex((obj => obj.url == url));
 						console.log(objIndex);
@@ -98,11 +88,6 @@ function readfeed(url) {
 							var oldurl=urllist[objIndex].latesturl;
 							var newtimestamp = Date.parse(item.pubdate)/1000;
 							if (newtimestamp > oldtimestamp) { //new item
-								console.log("new item published for ", url);
-								console.log("old timestamp : ", oldtimestamp);
-								console.log("new timestamp : ", newtimestamp);
-								console.log("old timestamp : ", oldurl);
-								console.log("new url : ", item.enclosure.url);
 								urllist[objIndex].latestbroadcast = newtimestamp
 								urllist[objIndex].token.setValue(item.enclosure.url);
 								urllist[objIndex].latesturl = item.enclosure.url;
@@ -113,23 +98,16 @@ function readfeed(url) {
 									'item': item.enclosure.url,
 									'tijd': item.pubdate
 								}		
-								
-								Homey.Podcast.TriggerNewPodcast
-									.trigger(tokens)
-									.catch(this.error)
-									.then(this.log)
+								urllist[objIndex].flowTriggers.newpodcast.trigger(tokens).catch( this.error );
 								
 								
 							} else {
 								//no new item
 							}
 						} else { //set first url in tag
-							//console.log ("first broadcast");
-							//console.log (urllist[objIndex]);
 							urllist[objIndex].token.setValue(item.enclosure.url);						
 							urllist[objIndex].latesturl = item.enclosure.url;
 							urllist[objIndex].latestbroadcast = Date.parse(item.pubdate)/1000;
-							//console.log(urllist[objIndex]);
 						}
 						teller=teller+1; //only first item
 					};	
@@ -168,7 +146,6 @@ function startPollingForUpdates() {
 function getsettings() {
 	return new Promise(function(resolve,reject){
 		var replText = Homey.ManagerSettings.get('podcasts');
-		//console.log(replText);
 		var list = [];
 		if (replText != null && typeof replText === 'object') {
 			Object.keys(replText).forEach(function (key) {
@@ -176,10 +153,6 @@ function getsettings() {
 				list.push( {"name":key,"url":url})
 				return list;
 			});
-		//console.log("tussentijdse list");
-		//console.log(list);
-		//console.log("bestaande url-list");
-		//console.log(urllist);
 		
 		list.forEach(function(listobject) {
 			var objIndex = urllist.findIndex(obj => obj.url == listobject.url);
@@ -189,8 +162,8 @@ function getsettings() {
 				listobject.latestbroadcast = urllist[objIndex].latestbroadcast;
 				listobject.latesturl = urllist[objIndex].latesturl;
 				listobject.token = urllist[objIndex].token;
+				listobject.flowTriggers = urllist[objIndex].flowTriggers
 			} else {
-				//console.log("nieuw item");
 				listobject.latestbroadcast = null;
 				listobject.latesturl = "";
 				listobject.token = new Homey.FlowToken( listobject.name, {
@@ -201,6 +174,8 @@ function getsettings() {
 					.then(() => {
 						return listobject.token.setValue( null );
 					})
+				listobject.flowTriggers = {newpodcast: new Homey.FlowCardTrigger('new_podcast_item')};
+				listobject.flowTriggers.newpodcast.register();
 			}
 		});
 		
