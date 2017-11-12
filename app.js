@@ -139,7 +139,7 @@ function startPollingForUpdates() {
 				//console.log(results);
 				Homey.ManagerMedia.requestPlaylistsUpdate();
 			})	
-	}, 60000);
+	}, 900000);
 };
 
 //get name and url list from settings and create array
