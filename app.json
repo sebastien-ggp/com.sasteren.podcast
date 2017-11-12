@@ -20,5 +20,43 @@
     "images": {
         "large": "/assets/images/large.jpg",
         "small": "/assets/images/small.jpg"
+    },
+	"flow": {
+		"triggers": [
+			{
+				"id": "new_podcast_item",
+				"title": {
+					"en": "There's a new Podcast",
+					"nl": "Er is een nieuwe Podcast"
+				},
+				"tokens": [
+					{
+						"name": "podcast",
+						"type": "string",
+						"title": {
+							"en": "podcast",
+							"nl": "podcast"
+						}
+					},
+					{
+						"name": "item",
+						"type": "string",
+						"title": {
+							"en": "latest podcast",
+							"nl": "nieuwste podcast"
+						}
+					},
+					{
+						"name": "tijd",
+						"type": "string",
+						"title": {
+							"en": "time",
+							"nl": "tijd"
+						}
+					}
+				]
+			}
+        ]
     }
+
 }
