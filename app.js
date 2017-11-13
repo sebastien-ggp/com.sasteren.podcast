@@ -52,7 +52,7 @@ class Podcast extends Homey.App {
 				readfeeds().then(function(results) {
 					console.log("feeds read from changing settings");
 					data=results;
-					console.log(results);
+					//console.log(results);
 					Homey.ManagerMedia.requestPlaylistsUpdate();
 				})		
 			});
@@ -179,6 +179,24 @@ function getsettings() {
 				listobject.flowTriggers.newpodcast.register();
 			}
 		});
+		
+		if (urllist.length > 0) {
+		urllist.forEach(function(listobject) {
+			var objIndex = list.findIndex(obj => obj.url == listobject.url);
+			console.log("listobject in lijst ", objIndex);
+			if (objIndex < 0) {
+				//not found so delete
+				//console.log("url niet gevonden dus verwijderen");
+				listobject.token.unregister()
+					.then(() => {
+						console.log("token unregistered");
+					})
+			} else {
+				//console.log("url gevonden dus niets doen");
+				//wel gevonden dus niets doen
+			}
+		});
+		}
 		
 		resolve(list);	
 		}
