@@ -94,11 +94,12 @@ function readfeed(url) {
 								
 								//here a trigger should be fired
 								let tokens = {
-									'podcast': urllist[objIndex].name,
 									'item': item.enclosure.url,
-									'tijd': item.pubdate
-								}		
-								console.log(urllist[objIndex].flowTriggers);
+									'tijd': item.pubdate,
+									'pctitle': urllist[objIndex].name,
+								}
+								console.log(tokens);
+								//console.log(urllist[objIndex].flowTriggers.newpodcast);
 								urllist[objIndex].flowTriggers.newpodcast.trigger(tokens).catch( this.error );
 								
 								

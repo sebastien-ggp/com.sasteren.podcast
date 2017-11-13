@@ -31,19 +31,19 @@
 				},
 				"tokens": [
 					{
-						"name": "podcast",
-						"type": "string",
-						"title": {
-							"en": "podcast-title",
-							"nl": "podcast-naam"
-						}
-					},
-					{
 						"name": "item",
 						"type": "string",
 						"title": {
 							"en": "latest podcast",
 							"nl": "nieuwste podcast"
+						}
+					},
+					{
+						"name": "pctitle",
+						"type": "string",
+						"title": {
+							"en": "podcast-title",
+							"nl": "podcast-naam"
 						}
 					},
 					{
