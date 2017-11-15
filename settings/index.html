@@ -14,7 +14,7 @@
 		<table style="width: 100%;">
 			<tr>
 				<td>
-					<h1>Podcasts</h1>
+					<h1>vodcasts</h1>
 					<p data-i18n="settings.intro"></p>
 				</td>
 				<td>
@@ -28,8 +28,8 @@
 					<!-- list header -->
 					<table style="width: 100%; border: 1px solid Gainsboro; border-collapse: collapse;">
 						<tr style="background-color: Gainsboro;">
-							<th id="headerText" title="" style="width: 40%; cursor:pointer; text-align: left;" data-i18n="settings.podcast_name" onclick="headerSort(0);"></th>
-							<th id="headerNumb" title="" style="width: 40%; cursor:pointer; text-align: left;" data-i18n="settings.podcast_url" onclick="headerSort(1);"></th>
+							<th id="headerText" title="" style="width: 40%; cursor:pointer; text-align: left;" data-i18n="settings.vodcast_name" onclick="headerSort(0);"></th>
+							<th id="headerNumb" title="" style="width: 40%; cursor:pointer; text-align: left;" data-i18n="settings.vodcast_url" onclick="headerSort(1);"></th>
 							<th style="width: 10%;" style="text-align: left;"><img src="../assets/images/icon_homey_wait.png" id="icon_homey" title="" height="20" width="20" style="float: right;"></td>
 							<th style="width: 10%;">&nbsp;</td>
 						</tr>
@@ -110,8 +110,8 @@
 
 			//create replacement list
 			docReplacement.innerHTML = '';
-			Homey.get('podcasts', function(err, replaceData){
-				if( err ) return console.error('Could not get podcasts', err);
+			Homey.get('vodcasts', function(err, replaceData){
+				if( err ) return console.error('Could not get vodcasts', err);
 				refreshItemCounter(); // reset
 				console.log(replaceData);
 				var i = 0;
@@ -415,7 +415,7 @@
 			// memorize current sort settings
 			var memFieldSort = [].concat(fieldSort);
  
-			// store podcasts reversed alphabetically on Homey
+			// store vodcasts reversed alphabetically on Homey
 			fieldSort = [2, 0]; 
 			sortList(0, false);
 			console.log(replacements);
@@ -423,7 +423,7 @@
 				console.log(i);
 				console.log(replacements[i]);
 			}
-			instanceHomey.set('podcasts', replacements);
+			instanceHomey.set('vodcasts', replacements);
 
 			// restore original sort settings
 			fieldSort = [].concat(memFieldSort);

@@ -1,15 +1,15 @@
 {
 	"settings": {
-		"title": "Podcast Instellingen",
-		"intro": "Voeg hier uw Podcasts toe",
+		"title": "Vodcast Instellingen",
+		"intro": "Voeg hier uw Vodcasts toe",
 		"replace_title": "let op",
 		"replace_info": "https-urls worden nog niet ondersteund.",
 		"textnumber_title": "nog te doen:",
-		"textnumber_info": "<A HREF='https://github.com/bvdbos/com.sasteren.podcast'>heel veel</A>",
-		"replace_items": "podcast-urls",
+		"textnumber_info": "<A HREF='https://github.com/bvdbos/com.sasteren.vodcast'>heel veel</A>",
+		"replace_items": "vodcast-urls",
 		"replace_add_button": "Toevoegen",		
-		"podcast_url": "podcast url",
-		"podcast_name": "podcast titel",
+		"podcast_url": "vodcast url",
+		"podcast_name": "vodcast titel",
 		"textnumber_checkbox": "doet nog niets"
 	}
 }

@@ -6,43 +6,24 @@ var FeedMe = require('feedme');
 var http = require('http');
 //var https = require('https');
 //var httpmin = require ('http.min');
-var data = []; //array with media-objects
+//var data = []; //array with media-objects
 var urllist = []; //array with {name,url,latestbroadcast,latesturl,token} feeds from settings
 		
-class Podcast extends Homey.App {
+class Vodcast extends Homey.App {
 	
 	onInit() {
-		this.log('Podcast starting');
+		this.log('Vodcast starting');
 		
 		getsettings().then(function(results) {
 			console.log("settings read");
 			urllist=results;
 			console.log(urllist);
 			readfeeds().then(function(results) {
-				console.log("feeds read from start");
-				data=results;
-				Homey.ManagerMedia.requestPlaylistsUpdate();
+				console.log("feeds read from start");			
 			})	
 		});
 
 		startPollingForUpdates();
-
-		Homey.ManagerMedia.on('getPlaylists', (callback) => {
-			console.log('get playlists');
-			return callback(null, data);
-		});	
-
-		Homey.ManagerMedia.on('getPlaylist', (request, callback) => {
-			console.log('get playlist');
-			return callback(null, data);
-		});
-
-		Homey.ManagerMedia.on('play', (objectid, callback) => {
-			console.log(objectid);
-			var urlobj= { stream_url : objectid.trackId };
-			console.log(urlobj);			
-			return callback(null, urlobj);
-		});
 		
 		Homey.ManagerSettings.on('set', function(settings) {
 			getsettings().then(function(urlsettings) {
@@ -51,9 +32,6 @@ class Podcast extends Homey.App {
 				//console.log(urllist);
 				readfeeds().then(function(results) {
 					console.log("feeds read from changing settings");
-					data=results;
-					//console.log(results);
-					Homey.ManagerMedia.requestPlaylistsUpdate();
 				})		
 			});
 		});
@@ -96,11 +74,11 @@ function readfeed(url) {
 								let tokens = {
 									'item': item.enclosure.url,
 									'tijd': item.pubdate,
-									'pctitle': urllist[objIndex].name,
+									'vctitle': urllist[objIndex].name,
 								}
 								console.log(tokens);
-								//console.log(urllist[objIndex].flowTriggers.newpodcast);
-								urllist[objIndex].flowTriggers.newpodcast.trigger(tokens).catch( this.error );
+								//console.log(urllist[objIndex].flowTriggers.newvodcast);
+								urllist[objIndex].flowTriggers.newvodcast.trigger(tokens).catch( this.error );
 								
 								
 							} else {
@@ -114,9 +92,9 @@ function readfeed(url) {
 						teller=teller+1; //only first item
 					};	
 				});
-				
-				
+								
 				res.pipe(parser);			
+
 				parser.on('end', function() {
 					var pl = parser.done();
 					var result = {
@@ -136,10 +114,10 @@ function startPollingForUpdates() {
 	var pollingInterval = setInterval(() => {
 		console.log('start polling');
 			readfeeds().then(function(results) {
-				//console.log("feeds read from polling");
-				data=results;
+				console.log("feeds read from polling");
+				//data=results;
 				//console.log(results);
-				Homey.ManagerMedia.requestPlaylistsUpdate();
+				//Homey.ManagerMedia.requestPlaylistsUpdate();
 			})	
 	}, 900000);
 };
@@ -147,7 +125,7 @@ function startPollingForUpdates() {
 //get name and url list from settings and create array
 function getsettings() {
 	return new Promise(function(resolve,reject){
-		var replText = Homey.ManagerSettings.get('podcasts');
+		var replText = Homey.ManagerSettings.get('vodcasts');
 		var list = [];
 		if (replText != null && typeof replText === 'object') {
 			Object.keys(replText).forEach(function (key) {
@@ -176,8 +154,8 @@ function getsettings() {
 					.then(() => {
 						return listobject.token.setValue( null );
 					})
-				listobject.flowTriggers = {newpodcast: new Homey.FlowCardTrigger('new_podcast_item')};
-				listobject.flowTriggers.newpodcast.register();
+				listobject.flowTriggers = {newvodcast: new Homey.FlowCardTrigger('new_vodcast_item')};
+				listobject.flowTriggers.newvodcast.register();
 			}
 		});
 		
@@ -214,14 +192,25 @@ function parseTracks(tracks) {
 	}
 	tracks.forEach((track) => {
 		const parsedTrack = parseTrack(track);
-		parsedTrack.confidence = 0.5;
-		result.push(parsedTrack);
+		if (parsedTrack !== null) {
+			parsedTrack.confidence = 0.5;
+			result.push(parsedTrack);
+		}
 	});
 	return result;
 }
 
 function parseTrack(track) {
-	var itemduration = hmsToSecondsOnly(track['itunes:duration']);
+
+	if(typeof track.enclosure == 'undefined' || typeof track.enclosure.url == 'undefined'){
+		return null
+	}
+	
+	if(typeof track['itunes:duration'] !== 'undefined'){
+		var itemduration = hmsToSecondsOnly(track['itunes:duration']);
+	}
+	
+	console.log(track['media:content']);
 	return {
 		type: 'track',
 		id: track.enclosure.url,
@@ -236,7 +225,7 @@ function parseTrack(track) {
 		artwork: '',
 		genre: track.genre || 'unknown',
 		release_date: dateformat(track.pubdate, "yyyy-mm-dd"),
-		codecs: ['homey:codec:mp3'],
+		codecs: ['homey:codec:mp4'],
 		bpm: track.pbm || 0,
 		options :  
 			{
@@ -261,4 +250,4 @@ function hmsToSecondsOnly(str) {
     return s;
 }
 
-module.exports = Podcast;
+module.exports = Vodcast;
