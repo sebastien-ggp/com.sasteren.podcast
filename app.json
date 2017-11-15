@@ -1,13 +1,13 @@
 {
-    "id": "com.sasteren.vodcast",
+    "id": "com.sasteren.podcast",
     "sdk": 2,
     "name": {
-        "en": "Vodcasts",
-		"nl": "Vodcasts"
+        "en": "Podcasts",
+		"nl": "Podcasts"
     },
     "description": {
-        "en": "Fetches video URLs for videostreams",
-		"nl": "Haalt video URLs voor videostreams op"
+        "en": "plays podcasts with Homey Music",
+		"nl": "speel podcasts af met Homey Music"
     },
     "category": "internet",
     "version": "0.2.0",
@@ -16,6 +16,7 @@
         "name": "Bas van den Bosch",
         "email": "bvdbos@gmail.com"
     },
+    "media": [ "getPlaylists", "getPlaylist", "play"],
     "images": {
         "large": "/assets/images/large.jpg",
         "small": "/assets/images/small.jpg"
@@ -23,26 +24,26 @@
 	"flow": {
 		"triggers": [
 			{
-				"id": "new_vodcast_item",
+				"id": "new_podcast_item",
 				"title": {
-					"en": "There's a new Vodcast",
-					"nl": "Er is een nieuwe Vodcast"
+					"en": "There's a new Podcast",
+					"nl": "Er is een nieuwe Podcast"
 				},
 				"tokens": [
 					{
 						"name": "item",
 						"type": "string",
 						"title": {
-							"en": "latest vodcast",
-							"nl": "nieuwste vodcast"
+							"en": "latest podcast",
+							"nl": "nieuwste podcast"
 						}
 					},
 					{
-						"name": "vctitle",
+						"name": "pctitle",
 						"type": "string",
 						"title": {
-							"en": "vodcast-title",
-							"nl": "vodcast-naam"
+							"en": "podcast-title",
+							"nl": "podcast-naam"
 						}
 					},
 					{

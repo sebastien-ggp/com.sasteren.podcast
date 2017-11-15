@@ -1,15 +1,15 @@
 {
 	"settings": {
-		"title": "Vodcast Settings",
-		"intro": "add your Vodcasts here",
+		"title": "Podcast Settings",
+		"intro": "add your Podcasts here",
 		"replace_title": "watch out",
 		"replace_info": "https-urls not yet supported.",
 		"textnumber_title": "to do:",
-		"textnumber_info": "<A HREF='https://github.com/bvdbos/com.sasteren.vodcast'>a lot</A>",
-		"replace_items": "vodcast-urls",
-		"replace_add_button": "add vodcast",
-		"podcast_url": "vodcast url",
-		"podcast_name": "vodcast titel",
+		"textnumber_info": "<A HREF='https://github.com/bvdbos/com.sasteren.podcast'>a lot</A>",
+		"replace_items": "podcast-urls",
+		"replace_add_button": "add podcast",
+		"podcast_url": "podcast url",
+		"podcast_name": "podcast titel",
 		"textnumber_checkbox": "does nothing yet"
 	}
 }
