@@ -214,14 +214,23 @@ function parseTracks(tracks) {
 	}
 	tracks.forEach((track) => {
 		const parsedTrack = parseTrack(track);
-		parsedTrack.confidence = 0.5;
-		result.push(parsedTrack);
+		if (parsedTrack !== null) {		
+			parsedTrack.confidence = 0.5;
+			result.push(parsedTrack);
+		}
 	});
 	return result;
 }
 
 function parseTrack(track) {
-	var itemduration = hmsToSecondsOnly(track['itunes:duration']);
+	if(typeof track.enclosure == 'undefined' || typeof track.enclosure.url == 'undefined'){
+		return null
+	}
+	
+	if(typeof track['itunes:duration'] !== 'undefined'){
+		var itemduration = hmsToSecondsOnly(track['itunes:duration']);
+	}
+	
 	return {
 		type: 'track',
 		id: track.enclosure.url,

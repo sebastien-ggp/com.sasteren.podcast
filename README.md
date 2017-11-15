@@ -17,6 +17,8 @@ plays podcasts in Homey Media
 <strike>13) if playing time is known, add it to media-manager</strike>  
 
 ## Changelog
+v0.2.1 (15-11-2017) : some extra error-checking
+
 v0.2.0 (12-11-2017) : added global tags for action-card, added trigger-card, changed icon, added playing time  
   
 v0.1.6 (03-11-17) : changed formatting and icon  
