@@ -10,13 +10,15 @@ plays podcasts in Homey Media
 6) rewrite item-title with date  
 7) use self-given item-name  
 <strike>8) triggers</strike>  
-9) action cards  
+<strike>9) action cards</strike>  
 10) voice commands  
 11) allow https  
 <strike>12) global tags for latest podcast-item</strike>  
 <strike>13) if playing time is known, add it to media-manager</strike>  
 
 ## Changelog
+v0.3.0 (17-11-2017) : pley podcast-item through flowcard-search (Homey music)  
+
 v0.2.1 (15-11-2017) : some extra error-checking
 
 v0.2.0 (12-11-2017) : added global tags for action-card, added trigger-card, changed icon, added playing time  

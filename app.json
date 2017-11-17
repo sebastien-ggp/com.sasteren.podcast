@@ -10,13 +10,13 @@
 		"nl": "speel podcasts af met Homey Music"
     },
     "category": "internet",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "compatibility": ">=1.5.0",
     "author": {
         "name": "Bas van den Bosch",
         "email": "bvdbos@gmail.com"
     },
-    "media": [ "getPlaylists", "getPlaylist", "play"],
+    "media": [ "getPlaylists", "getPlaylist", "play", "search"],
     "images": {
         "large": "/assets/images/large.jpg",
         "small": "/assets/images/small.jpg"

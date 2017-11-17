@@ -43,6 +43,21 @@ class Podcast extends Homey.App {
 			console.log(urlobj);			
 			return callback(null, urlobj);
 		});
+
+		Homey.ManagerMedia.on('search', (queryObject, callback) => {
+			//data is an array of playlists
+			var tarray = []
+			Object.keys(data).forEach(key => {
+				var tracklist=data[key].tracks;
+				for (var i = 0, len = tracklist.length; i < len; i++) {
+					console.log(tracklist[i].title.indexOf(queryObject.searchQuery));
+					if (tracklist[i].title.toLowerCase().indexOf(queryObject.searchQuery.toLowerCase()) > -1) {
+						tarray.push(tracklist[i]);
+					}
+				}
+			})
+			callback(null,tarray);
+		});
 		
 		Homey.ManagerSettings.on('set', function(settings) {
 			getsettings().then(function(urlsettings) {
