@@ -33,6 +33,7 @@
 					{
 						"name": "item",
 						"type": "string",
+						"example": "https://content1b.omroep.nl/urishieldv2/l27m11508c5b37b099ff005a2d3d09000000.4fdbeaaa057d1b26b557ee8e3c9cb699/portal/radiomanager/rm3-radio1/audiofragments/65/64300-Britse_undercoverpraktijken_onder_vuur.mp3",
 						"title": {
 							"en": "latest podcast",
 							"nl": "nieuwste podcast"
@@ -41,6 +42,7 @@
 					{
 						"name": "pctitle",
 						"type": "string",
+						"example": "Argos",
 						"title": {
 							"en": "podcast-title",
 							"nl": "podcast-naam"
@@ -49,6 +51,7 @@
 					{
 						"name": "tijd",
 						"type": "string",
+						"example": "2682017",
 						"title": {
 							"en": "time",
 							"nl": "tijd"
