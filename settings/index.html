@@ -48,10 +48,18 @@
 							</td>
 							<th style="text-align: center;">
 								<div id="itemCount" title ="" style="font-size: 14px; cursor:default;"></div><div style="font-size:10px; cursor:default;" data-i18n="settings.replace_items"></div>
-							</th>
+							</th>				
+						</tr>
+						<tr></tr>
+						<tr>
+							<td style="text-align: left;">
+								<p data-i18n="settings.textnumber_info"></p>
+							</td>
+							<td>
+								<input id="textnumber_checkbox" type="checkbox" name="textnumber" value="1" onclick="showIconHomey('upload'); instanceHomey.set('textnumber', $('#textnumber_checkbox:checked').length);"> <span data-i18n="settings.textnumber_checkbox"></span>
+							</td>					
 						</tr>
 					</table>
-
 		</fieldset>
 
 		<script type="text/javascript">
@@ -336,15 +344,8 @@
 
 				case 'inUrl':
 					console.log(xValue.substr(0,5));				
-					if (xValue.substr(0,5) == 'https') {
-					console.log("is https");
-						xValue = '?'; 
-						obj.style.backgroundColor = '#F0F0F0';
-					} else {
-						obj.style.backgroundColor = '#FFFFFF';
-					}
 					
-					if ((xValue.substr(0,4) == 'http') || (xValue == '?')) {
+					if ((xValue.substr(0,4) == 'http') || (xValue.substr(0,5) == 'https')) {
 					} else {
 						console.log ("geen http");
 						xValue = '?'; 

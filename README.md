@@ -7,17 +7,19 @@ plays podcasts in Homey Media
 <strike>3) texts for settings</strike>  
 4) verify urls  
 <strike>5) lots of error-chekings</strike>  
-6) rewrite item-title with date  
-7) use self-given item-name  
+<strike>6) rewrite item-title with date</strike>  
+<strike>7) use self-given podcast-name</strike>    
 <strike>8) triggers</strike>  
 <strike>9) action cards</strike>  
 10) voice commands  
-11) allow https  
+<strike>11) allow https</strike>  
 <strike>12) global tags for latest podcast-item</strike>  
 <strike>13) if playing time is known, add it to media-manager</strike>  
 
 ## Changelog
-v0.3.0 (17-11-2017) : pley podcast-item through flowcard-search (Homey music)  
+v1.0.0 (10-12-2017) : allow https, add date to podcast, dates as album, fix podcast-title
+
+v0.3.0 (17-11-2017) : play podcast-item through flowcard-search (Homey music)  
 
 v0.2.1 (15-11-2017) : some extra error-checking
 

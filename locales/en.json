@@ -3,13 +3,14 @@
 		"title": "Podcast Settings",
 		"intro": "add your Podcasts here",
 		"replace_title": "watch out",
+		"podcast_rewrite": "append date",
 		"replace_info": "https-urls not yet supported.",
 		"textnumber_title": "to do:",
-		"textnumber_info": "<A HREF='https://github.com/bvdbos/com.sasteren.podcast'>a lot</A>",
+		"textnumber_info": "podcast-dates can be added to the titles",
 		"replace_items": "podcast-urls",
 		"replace_add_button": "add podcast",
 		"podcast_url": "podcast url",
 		"podcast_name": "podcast titel",
-		"textnumber_checkbox": "does nothing yet"
+		"textnumber_checkbox": "append date"
 	}
 }

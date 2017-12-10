@@ -3,13 +3,14 @@
 		"title": "Podcast Instellingen",
 		"intro": "Voeg hier uw Podcasts toe",
 		"replace_title": "let op",
+		"podcast_rewrite": "datum toev.",
 		"replace_info": "https-urls worden nog niet ondersteund.",
 		"textnumber_title": "nog te doen:",
-		"textnumber_info": "<A HREF='https://github.com/bvdbos/com.sasteren.podcast'>heel veel</A>",
+		"textnumber_info": "datums kunnen aan titels worden toegevoegd",
 		"replace_items": "podcast-urls",
 		"replace_add_button": "Toevoegen",		
 		"podcast_url": "podcast url",
 		"podcast_name": "podcast titel",
-		"textnumber_checkbox": "doet nog niets"
+		"textnumber_checkbox": "datum toev."
 	}
 }

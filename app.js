@@ -4,10 +4,12 @@ const Homey = require('homey');
 const dateformat = require('dateformat');
 var FeedMe = require('feedme');
 var http = require('http');
-//var https = require('https');
+var https = require('https');
 //var httpmin = require ('http.min');
 var data = []; //array with media-objects
 var urllist = []; //array with {name,url,latestbroadcast,latesturl,token} feeds from settings
+var rewritetitle
+var pollingtime = 900000
 		
 class Podcast extends Homey.App {
 	
@@ -50,7 +52,7 @@ class Podcast extends Homey.App {
 			Object.keys(data).forEach(key => {
 				var tracklist=data[key].tracks;
 				for (var i = 0, len = tracklist.length; i < len; i++) {
-					console.log(tracklist[i].title.indexOf(queryObject.searchQuery));
+					//console.log(tracklist[i].title.indexOf(queryObject.searchQuery));
 					if (tracklist[i].title.toLowerCase().indexOf(queryObject.searchQuery.toLowerCase()) > -1) {
 						tarray.push(tracklist[i]);
 					}
@@ -82,14 +84,72 @@ async function readfeeds() {
 		for(var i = 0; i < urllist.length; i++) {
 				var obj = urllist[i];
 				//console.log("readfeed ", obj.url);
-				var item = await readfeed(obj.url);
+				var item = await readfeed(obj.url, obj.name);
 				temparray.push (item);
 		};
 		return temparray;
 };
 	
-function readfeed(url) {
+function readfeed(url,name) {
 	return new Promise(resolve => {
+		if (url.substring(0,5) == 'https') {
+			console.log("https-url ", url)
+			https.get(url, function(res) {
+				var parser = new FeedMe(true);
+				var teller=0;
+				
+				parser.on('item', (item) => {
+					if (teller === 0) { //only on first item
+						var objIndex = urllist.findIndex((obj => obj.url == url));
+						//console.log(objIndex);
+						if (urllist[objIndex].latestbroadcast != null) { //already a latest url in tag
+							var oldtimestamp = urllist[objIndex].latestbroadcast;
+							var oldurl=urllist[objIndex].latesturl;
+							var newtimestamp = Date.parse(item.pubdate)/1000;
+							if (newtimestamp > oldtimestamp) { //new item
+								urllist[objIndex].latestbroadcast = newtimestamp
+								urllist[objIndex].token.setValue(item.enclosure.url);
+								urllist[objIndex].latesturl = item.enclosure.url;
+								
+								//here a trigger should be fired
+								let tokens = {
+									'item': item.enclosure.url,
+									'tijd': item.pubdate,
+									'pctitle': urllist[objIndex].name,
+								}
+								//console.log(tokens);
+								//console.log(urllist[objIndex].flowTriggers.newpodcast);
+								urllist[objIndex].flowTriggers.newpodcast.trigger(tokens).catch( this.error );
+								
+								
+							} else {
+								//no new item
+							}
+						} else { //set first url in tag
+							urllist[objIndex].token.setValue(item.enclosure.url);						
+							urllist[objIndex].latesturl = item.enclosure.url;
+							urllist[objIndex].latestbroadcast = Date.parse(item.pubdate)/1000;
+						}
+						teller=teller+1; //only first item
+					};	
+				});
+				
+				
+				res.pipe(parser);			
+				parser.on('end', function() {
+					var pl = parser.done();
+					var result = {
+						type: 'playlist',
+						id: pl.title,
+						title: name,
+						tracks: parseTracks(pl.items) || false,
+					};
+
+				resolve(result);
+				});	
+			});
+		} else {
+			console.log("http-url ", url)
 			http.get(url, function(res) {
 				var parser = new FeedMe(true);
 				var teller=0;
@@ -97,7 +157,7 @@ function readfeed(url) {
 				parser.on('item', (item) => {
 					if (teller === 0) { //only on first item
 						var objIndex = urllist.findIndex((obj => obj.url == url));
-						console.log(objIndex);
+						//console.log(objIndex);
 						if (urllist[objIndex].latestbroadcast != null) { //already a latest url in tag
 							var oldtimestamp = urllist[objIndex].latestbroadcast;
 							var oldurl=urllist[objIndex].latesturl;
@@ -122,6 +182,7 @@ function readfeed(url) {
 								//no new item
 							}
 						} else { //set first url in tag
+							//console.log(item)
 							urllist[objIndex].token.setValue(item.enclosure.url);						
 							urllist[objIndex].latesturl = item.enclosure.url;
 							urllist[objIndex].latestbroadcast = Date.parse(item.pubdate)/1000;
@@ -137,13 +198,15 @@ function readfeed(url) {
 					var result = {
 						type: 'playlist',
 						id: pl.title,
-						title: pl.title,
+						title: name,
 						tracks: parseTracks(pl.items) || false,
 					};
-
+				console.log(result.tracks.length, " items")
 				resolve(result);
 				});	
-			});		
+			});			
+			
+		}
 	});
 };
 
@@ -156,12 +219,14 @@ function startPollingForUpdates() {
 				//console.log(results);
 				Homey.ManagerMedia.requestPlaylistsUpdate();
 			})	
-	}, 900000);
+	}, pollingtime);
 };
 
 //get name and url list from settings and create array
 function getsettings() {
 	return new Promise(function(resolve,reject){
+		rewritetitle = Homey.ManagerSettings.get('textnumber')
+		console.log("got setting textnumber ", rewritetitle);
 		var replText = Homey.ManagerSettings.get('podcasts');
 		var list = [];
 		if (replText != null && typeof replText === 'object') {
@@ -170,51 +235,52 @@ function getsettings() {
 				list.push( {"name":key,"url":url})
 				return list;
 			});
-		
-		list.forEach(function(listobject) {
-			var objIndex = urllist.findIndex(obj => obj.url == listobject.url);
-			console.log ("objIndex ", objIndex, "in urllist voor ",listobject.url);
-			if (objIndex > -1) {
-				console.log("gegevens overnemen");
-				listobject.latestbroadcast = urllist[objIndex].latestbroadcast;
-				listobject.latesturl = urllist[objIndex].latesturl;
-				listobject.token = urllist[objIndex].token;
-				listobject.flowTriggers = urllist[objIndex].flowTriggers
-			} else {
-				listobject.latestbroadcast = null;
-				listobject.latesturl = "";
-				listobject.token = new Homey.FlowToken( listobject.name, {
+			console.log(list)
+			list.forEach(function(listobject) {
+				var objIndex = urllist.findIndex(obj => obj.url == listobject.url);
+				console.log ("objIndex ", objIndex, "in urllist voor ",listobject.url);
+				if (objIndex > -1) {
+					console.log("gegevens overnemen");
+					listobject.latestbroadcast = urllist[objIndex].latestbroadcast;
+					listobject.latesturl = urllist[objIndex].latesturl;
+					listobject.token = urllist[objIndex].token;
+					listobject.flowTriggers = urllist[objIndex].flowTriggers
+				} else {
+					listobject.latestbroadcast = null;
+					listobject.latesturl = "";
+					listobject.token = new Homey.FlowToken( listobject.name, {
 						type: 'string',
 						title: listobject.name
 					});
-				listobject.token.register()
-					.then(() => {
-						return listobject.token.setValue( null );
-					})
-				listobject.flowTriggers = {newpodcast: new Homey.FlowCardTrigger('new_podcast_item')};
-				listobject.flowTriggers.newpodcast.register();
-			}
-		});
+					listobject.token.register()
+						.then(() => {
+							return listobject.token.setValue( null );
+						})
+					listobject.flowTriggers = {newpodcast: new Homey.FlowCardTrigger('new_podcast_item')};
+					listobject.flowTriggers.newpodcast.register();
+				}
+			});
 		
-		if (urllist.length > 0) {
-		urllist.forEach(function(listobject) {
-			var objIndex = list.findIndex(obj => obj.url == listobject.url);
-			console.log("listobject in lijst ", objIndex);
-			if (objIndex < 0) {
-				//not found so delete
-				//console.log("url niet gevonden dus verwijderen");
-				listobject.token.unregister()
-					.then(() => {
-						console.log("token unregistered");
-					})
-			} else {
-				//console.log("url gevonden dus niets doen");
-				//wel gevonden dus niets doen
+			if (urllist.length > 0) {
+				urllist.forEach(function(listobject) {
+					var objIndex = list.findIndex(obj => obj.url == listobject.url);
+					console.log("listobject in lijst ", objIndex);
+					if (objIndex < 0) {
+						//not found so delete
+						//console.log("url niet gevonden dus verwijderen");
+						listobject.token.unregister()
+							.then(() => {
+								console.log("token unregistered");
+							})
+					} else {
+						//console.log("url gevonden dus niets doen");
+						//wel gevonden dus niets doen
+					}
+				});
 			}
-		});
-		}
-		
-		resolve(list);	
+			resolve(list);	
+		} else {
+			reject(null)
 		}
 	})
 }	
@@ -243,8 +309,14 @@ function parseTrack(track) {
 	}
 	
 	if(typeof track['itunes:duration'] !== 'undefined'){
+		//console.log(track['itunes:duration'])
 		var itemduration = hmsToSecondsOnly(track['itunes:duration']);
 	}
+	
+	if (rewritetitle == 1) {
+		track.title=track.title + " (" + track.pubdate + ")";
+	}
+	//console.log(track.title)
 	
 	return {
 		type: 'track',
@@ -260,6 +332,7 @@ function parseTrack(track) {
 		artwork: '',
 		genre: track.genre || 'unknown',
 		release_date: dateformat(track.pubdate, "yyyy-mm-dd"),
+		album: dateformat(track.pubdate, "dd-mm-yyyy hh:mm"),
 		codecs: ['homey:codec:mp3'],
 		bpm: track.pbm || 0,
 		options :  
