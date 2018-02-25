@@ -36,6 +36,10 @@ v0.1.3 (10-10-17) : use promises
 v0.1.1 (9-10-17) : no app-restart needed for reloading podcasts in Media-view, texts for settings added
   
 v0.1.0 (8-10-17) : first version
+
+## create rss feeds
+If a publishers only provides a soundcloud-url and/or I-tunes URL and no rss-feed of the podcast you can use
+http://getrssfeed.com/
   
 ## Thanks to:
 icon: http://library.fridoverweij.com/svg/icons.html  
