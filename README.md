@@ -17,6 +17,8 @@ plays podcasts in Homey Media
 <strike>13) if playing time is known, add it to media-manager</strike>  
 
 ## Changelog
+v1.0.1 (11-3-2018) : adoptions for appstore
+
 v1.0.0 (10-12-2017) : allow https, add date to podcast, dates as album, fix podcast-title
 
 v0.3.0 (17-11-2017) : play podcast-item through flowcard-search (Homey music)  
