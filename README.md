@@ -17,6 +17,8 @@ plays podcasts in Homey Media
 <strike>13) if playing time is known, add it to media-manager</strike>  
 
 ## Changelog
+v1.2.0 (30-1-2019) : Fixed removal of ManagerMedia in FW2.0.2
+
 v1.0.1 (11-3-2018) : adoptions for appstore
 
 v1.0.0 (10-12-2017) : allow https, add date to podcast, dates as album, fix podcast-title

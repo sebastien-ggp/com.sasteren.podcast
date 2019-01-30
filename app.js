@@ -23,29 +23,20 @@ class Podcast extends Homey.App {
 			readfeeds().then(function(results) {
 				console.log("feeds read from start");
 				data=results;
-				Homey.ManagerMedia.requestPlaylistsUpdate();
+				if (Homey.ManagerMedia){
+					Homey.ManagerMedia.requestPlaylistsUpdate();
+				}
 			})	
 		});
+		
+		console.log("startPollingForUpdates");
+		if (urllist.length > 0) {
+			console.log("URLLIST > 0");
+			startPollingForUpdates();
+		}
 
-		startPollingForUpdates();
 
-		Homey.ManagerMedia.on('getPlaylists', (callback) => {
-			console.log('get playlists');
-			return callback(null, data);
-		});	
-
-		Homey.ManagerMedia.on('getPlaylist', (request, callback) => {
-			console.log('get playlist');
-			return callback(null, data);
-		});
-
-		Homey.ManagerMedia.on('play', (objectid, callback) => {
-			console.log(objectid);
-			var urlobj= { stream_url : objectid.trackId };
-			console.log(urlobj);			
-			return callback(null, urlobj);
-		});
-
+if (Homey.ManagerMedia){
 		Homey.ManagerMedia.on('search', (queryObject, callback) => {
 			//data is an array of playlists
 			var tarray = []
@@ -60,6 +51,7 @@ class Podcast extends Homey.App {
 			})
 			callback(null,tarray);
 		});
+}
 		
 		Homey.ManagerSettings.on('set', function(settings) {
 			getsettings().then(function(urlsettings) {
@@ -70,7 +62,9 @@ class Podcast extends Homey.App {
 					console.log("feeds read from changing settings");
 					data=results;
 					//console.log(results);
-					Homey.ManagerMedia.requestPlaylistsUpdate();
+					if (Homey.ManagerMedia){
+						Homey.ManagerMedia.requestPlaylistsUpdate();
+					}
 				})		
 			});
 		});
@@ -217,7 +211,9 @@ function startPollingForUpdates() {
 				//console.log("feeds read from polling");
 				data=results;
 				//console.log(results);
-				Homey.ManagerMedia.requestPlaylistsUpdate();
+				if (Homey.ManagerMedia){
+					Homey.ManagerMedia.requestPlaylistsUpdate();
+				}
 			})	
 	}, pollingtime);
 };
@@ -228,8 +224,10 @@ function getsettings() {
 		rewritetitle = Homey.ManagerSettings.get('textnumber')
 		console.log("got setting textnumber ", rewritetitle);
 		var replText = Homey.ManagerSettings.get('podcasts');
+		console.log("got podcasts ", replText);
 		var list = [];
 		if (replText != null && typeof replText === 'object') {
+			console.log("start dissecting ", replText);
 			Object.keys(replText).forEach(function (key) {
 				var url = replText[key];
 				list.push( {"name":key,"url":url})
@@ -280,7 +278,7 @@ function getsettings() {
 			}
 			resolve(list);	
 		} else {
-			reject(null)
+			reject("")
 		}
 	})
 }	
