@@ -1,0 +1,16 @@
+{
+	"settings": {
+		"title": "Podcast Einstellungen",
+		"intro": "füge deine Podcasts hinzu",
+		"replace_title": "Achtung",
+		"podcast_rewrite": "Datum hinzufügen",
+		"replace_info": "Https-Urls werden nicht unterstützt.",
+		"textnumber_title": "zu erledigen:",
+		"textnumber_info": "Podcast-Daten können zum Titel hinzugefügt werden",
+		"replace_items": "Podcast-Urls",
+		"replace_add_button": "Podcast hinzufügen",
+		"podcast_url": "Podcast Url",
+		"podcast_name": "Podcast Titel",
+		"textnumber_checkbox": "Datum hinzufügen"
+	}
+}
