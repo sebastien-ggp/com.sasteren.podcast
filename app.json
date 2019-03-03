@@ -4,15 +4,15 @@
     "name": {
         "en": "Podcasts",
 		"nl": "Podcasts",
-    "de": "Podcasts"
+		"de": "Podcasts"
     },
     "description": {
         "en": "plays podcasts",
 		"nl": "speel podcasts",
-    "de": "spielt Podcasts"
+		"de": "spielt Podcasts"
     },
     "category": "internet",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "compatibility": ">=1.5.0",
     "author": {
         "name": "Bas van den Bosch",
@@ -23,7 +23,10 @@
         "large": "/assets/images/large.jpg",
         "small": "/assets/images/small.jpg"
     },
-	"athomForumDiscussionId": 3975,
+	    "bugs": {
+        "url": "https://github.com/bvdbos/com.sasteren.podcast/issues"
+    },
+    "homeyCommunityTopicId": 10049,
 	"flow": {
 		"triggers": [
 			{
@@ -31,7 +34,7 @@
 				"title": {
 					"en": "There's a new Podcast",
 					"nl": "Er is een nieuwe Podcast",
-          "de": "Es gibt einen neuen Podcast"
+					"de": "Es gibt einen neuen Podcast"
 				},
 				"tokens": [
 					{
