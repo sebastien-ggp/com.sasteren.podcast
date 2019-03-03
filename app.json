@@ -3,11 +3,13 @@
     "sdk": 2,
     "name": {
         "en": "Podcasts",
-		"nl": "Podcasts"
+		"nl": "Podcasts",
+    "de": "Podcasts"
     },
     "description": {
         "en": "plays podcasts",
-		"nl": "speel podcasts"
+		"nl": "speel podcasts",
+    "de": "spielt Podcasts"
     },
     "category": "internet",
     "version": "1.2.0",
@@ -28,7 +30,8 @@
 				"id": "new_podcast_item",
 				"title": {
 					"en": "There's a new Podcast",
-					"nl": "Er is een nieuwe Podcast"
+					"nl": "Er is een nieuwe Podcast",
+          "de": "Es gibt einen neuen Podcast"
 				},
 				"tokens": [
 					{
@@ -37,7 +40,8 @@
 						"example": "https://content1b.omroep.nl/urishieldv2/l27m11508c5b37b099ff005a2d3d09000000.4fdbeaaa057d1b26b557ee8e3c9cb699/portal/radiomanager/rm3-radio1/audiofragments/65/64300-Britse_undercoverpraktijken_onder_vuur.mp3",
 						"title": {
 							"en": "latest podcast",
-							"nl": "nieuwste podcast"
+							"nl": "nieuwste podcast",
+              "de": "neuester Podcast"
 						}
 					},
 					{
@@ -46,7 +50,8 @@
 						"example": "Argos",
 						"title": {
 							"en": "podcast-title",
-							"nl": "podcast-naam"
+							"nl": "podcast-naam",
+              "de": "Podcast-Titel"
 						}
 					},
 					{
@@ -55,7 +60,8 @@
 						"example": "2682017",
 						"title": {
 							"en": "time",
-							"nl": "tijd"
+							"nl": "tijd",
+              "de": "Zeit"
 						}
 					}
 				]
