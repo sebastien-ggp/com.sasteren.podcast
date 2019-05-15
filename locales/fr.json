@@ -1,0 +1,16 @@
+{
+	"settings": {
+		"title": "Paramètres Podcast",
+		"intro": "Ajoutez vos Podcasts ici",
+		"replace_title": "Faire attention",
+		"podcast_rewrite": "Ajouter la date",
+		"replace_info": "https-urls pas encore pris en charge.",
+		"textnumber_title": "Faire :",
+		"textnumber_info": "Les dates de podcast peuvent être ajoutées aux titres",
+		"replace_items": "Podcast-urls",
+		"replace_add_button": "Ajouter podcast",
+		"podcast_url": "Podcast url",
+		"podcast_name": "Titre Podcast",
+		"textnumber_checkbox": "Ajouter la date"
+	}
+}
